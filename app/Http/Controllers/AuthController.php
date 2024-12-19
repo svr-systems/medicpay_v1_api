@@ -9,52 +9,37 @@ use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class AuthController extends Controller {
-  public $msg_err;
-
-  public function __construct() {
-    $this->msg_err = "Error. Contacte al equipo de desarrollo";
-  }
-
   public function logIn(Request $req) {
     try {
       if (
         !Auth::attempt([
-          "email" => $req->email,
-          "password" => $req->password
+          'email' => $req->email,
+          'password' => $req->password
         ])
       ) {
-        return response()->json([
-          "ok" => false,
-          "msg" => "Datos de acceso inválidos",
-          "err" => null
-        ], 500);
+        return $this->apiRsp(422, 'Datos de acceso inválidos', null);
       }
 
-      $token = Auth::user()->createToken("authToken")->accessToken;
+      $token = Auth::user()->createToken('authToken')->accessToken;
       $user = User::find(Auth::id(), [
-        "id",
-        "name",
-        "email",
-        "role_id",
+        'id',
+        'name',
+        'email',
+        'role_id',
       ]);
 
-      $user->role = Role::find($user->role_id, ["name"]);
+      $user->role = Role::find($user->role_id, ['name']);
 
-      return response()->json([
-        "ok" => true,
-        "msg" => "Datos de acceso validos",
-        "data" => [
-          "auth" => true,
-          "token" => $token,
-          "user" => $user
+      return $this->apiRsp(
+        200,
+        'Datos de acceso validos',
+        [
+          'token' => $token,
+          'user' => $user
         ]
-      ], 200);
+      );
     } catch (Throwable $err) {
-      return response()->json([
-        "ok" => false,
-        "msg" => $this->msg_err,
-        "err" => $err
-      ], 500);
+      return $this->apiRsp(500, null, $err);
     }
   }
 
@@ -62,16 +47,13 @@ class AuthController extends Controller {
     try {
       $req->user()->token()->revoke();
 
-      return response()->json([
-        "ok" => true,
-        "msg" => "Sesión finalizada correctamente"
-      ], 200);
+      return $this->apiRsp(
+        200,
+        'Sesión finalizada correctamente',
+        null
+      );
     } catch (Throwable $err) {
-      return response()->json([
-        "ok" => false,
-        "msg" => $this->msg_err,
-        "err" => $err
-      ], 500);
+      return $this->apiRsp(500, null, $err);
     }
   }
 }

@@ -2,26 +2,29 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 //LOG
 Route::group([
-  "prefix" => "auth"
+  'prefix' => 'auth'
 ], function () {
-  Route::post("log_in", [AuthController::class, "logIn"]);
+  Route::post('log_in', [AuthController::class, 'logIn']);
 
   Route::group(
     [
-      "middleware" => "auth:api"
+      'middleware' => 'auth:api'
     ],
     function () {
-      Route::get("log_out", [AuthController::class, "logOut"]);
+      Route::get('log_out', [AuthController::class, 'logOut']);
     }
   );
 });
 
 //AUTH
-Route::group(["middleware" => "auth:api"], function () {
+Route::group(['middleware' => 'auth:api'], function () {
+  Route::apiResource('users', UserController::class);
+
   //CATALOGS
-  Route::get("roles", [RoleController::class, "index"]);
+  Route::get('roles', [RoleController::class, 'index']);
 });

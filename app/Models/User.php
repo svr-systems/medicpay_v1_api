@@ -26,4 +26,44 @@ class User extends Authenticatable {
     'password',
     'remember_token',
   ];
+
+  static public function getItems($req) {
+    $items = User::
+      where('active', true)->
+      where('id', '!=', $req->user()->id)->
+      orderBy('email')->
+      get([
+        'id',
+        'name',
+        'email',
+        'role_i'
+      ]);
+
+    foreach ($items as $key => $item) {
+      $item->key = $key;
+      $item->role = Role::find($item->role_id, ['name']);
+    }
+
+    return $items;
+  }
+
+  static public function getItem($id) {
+    $item = User::
+      find($id, [
+        'id',
+        'created_at',
+        'updated_at',
+        'created_by_id',
+        'updated_by_id',
+        'name',
+        'email',
+        'role_id',
+      ]);
+
+    $item->created_by = User::find($item->created_by_id, ['email']);
+    $item->updated_by = User::find($item->updated_by_id, ['email']);
+    $item->role = Role::find($item->role_id, ['name']);
+
+    return $item;
+  }
 }
