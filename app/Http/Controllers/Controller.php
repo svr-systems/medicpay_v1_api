@@ -17,7 +17,7 @@ class Controller extends BaseController {
     return response()->json([
       'ok' => $ok,
       'msg' => is_null($msg) && !$ok ? $msg_err_def : $msg,
-      'data' => $ok ? $data : $data->getTraceAsString(),
+      'data' => !$ok && !is_null($data) ? $data->getTraceAsString() : $data,
     ], $status);
   }
 }

@@ -36,7 +36,7 @@ class User extends Authenticatable {
         'id',
         'name',
         'email',
-        'role_i'
+        'role_id'
       ]);
 
     foreach ($items as $key => $item) {

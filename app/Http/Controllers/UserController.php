@@ -73,11 +73,7 @@ class UserController extends Controller {
       $is_valid = $this->isValid($req, $id);
 
       if ($is_valid->fails()) {
-        return response()->json([
-          'ok' => false,
-          'msg' => $is_valid->errors()->first(),
-          'err' => $is_valid->errors()->first(),
-        ], 500);
+        return $this->apiRsp(500, $is_valid->errors()->first(), null);
       }
 
       if (is_null($id)) {
@@ -127,5 +123,24 @@ class UserController extends Controller {
     $item->save();
 
     return $item;
+  }
+
+  public function setPassword(Request $req) {
+    DB::beginTransaction();
+    try {
+      $item = User::find($req->id);
+      $item->password = bcrypt(trim($req->password));
+      $item->updated_by_id = $req->user()->id;
+      $item->save();
+
+      DB::commit();
+      return $this->apiRsp(
+        200,
+        'Contraseña actualizada correctamente',
+        null
+      );
+    } catch (Throwable $err) {
+      return $this->apiRsp(500, null, $err);
+    }
   }
 }
