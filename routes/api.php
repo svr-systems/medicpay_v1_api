@@ -14,7 +14,7 @@ Route::group(['prefix' => 'auth'], function () {
   });
 });
 
-//AUTH
+//WITH AUTH
 Route::group(['middleware' => 'auth:api'], function () {
   Route::apiResource('users', UserController::class);
   Route::group(['prefix' => 'users'], function () {
