@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +35,10 @@ class AuthController extends Controller {
         "id",
         "name",
         "email",
+        "role_id",
       ]);
+
+      $user->role = Role::find($user->role_id, ["name"]);
 
       return response()->json([
         "ok" => true,
