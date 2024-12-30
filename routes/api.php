@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\Route;
 
 //LOG
 Route::group(['prefix' => 'auth'], function () {
-  Route::post('log_in', [AuthController::class, 'logIn']);
+  Route::post('login', [AuthController::class, 'login']);
 
   Route::group(['middleware' => 'auth:api'], function () {
-    Route::get('log_out', [AuthController::class, 'logOut']);
+    Route::get('logout', [AuthController::class, 'logout']);
   });
 });
 
@@ -18,7 +18,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['middleware' => 'auth:api'], function () {
   Route::apiResource('users', UserController::class);
   Route::group(['prefix' => 'users'], function () {
-    Route::post('set_password', [UserController::class, 'setPassword']);
+    Route::post('password', [UserController::class, 'setPassword']);
   });
 
   //CATALOGS

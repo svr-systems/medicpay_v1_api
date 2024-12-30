@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class AuthController extends Controller {
-  public function logIn(Request $req) {
+  public function login(Request $req) {
     try {
       if (
         !Auth::attempt([
@@ -43,14 +43,13 @@ class AuthController extends Controller {
     }
   }
 
-  public function logOut(Request $req) {
+  public function logout(Request $req) {
     try {
       $req->user()->token()->revoke();
 
       return $this->apiRsp(
         200,
-        'Sesión finalizada correctamente',
-        null
+        'Sesión finalizada correctamente'
       );
     } catch (Throwable $err) {
       return $this->apiRsp(500, null, $err);
