@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\DocMgrController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -35,12 +36,17 @@ class User extends Authenticatable {
       get([
         'id',
         'name',
+        'surname_p',
+        'surname_m',
+        'avatar',
         'email',
         'role_id'
       ]);
 
     foreach ($items as $key => $item) {
       $item->key = $key;
+      $item->full_name = trim($item->name . ' ' . $item->surname_p . ' ' . $item->surname_m);
+      $item->avatar_b64 = DocMgrController::getB64($item->avatar, "User");
       $item->role = Role::find($item->role_id, ['name']);
     }
 
@@ -56,12 +62,36 @@ class User extends Authenticatable {
         'created_by_id',
         'updated_by_id',
         'name',
+        'surname_p',
+        'surname_m',
+        'avatar',
         'email',
         'role_id',
       ]);
 
     $item->created_by = User::find($item->created_by_id, ['email']);
     $item->updated_by = User::find($item->updated_by_id, ['email']);
+    $item->full_name = trim($item->name . ' ' . $item->surname_p . ' ' . $item->surname_m);
+    $item->avatar_b64 = DocMgrController::getB64($item->avatar, "User");
+    $item->avatar_doc = null;
+    $item->avatar_dlt = false;
+    $item->role = Role::find($item->role_id, ['name']);
+
+    return $item;
+  }
+
+  static public function getItemAuth($id) {
+    $item = User::find($id, [
+      'id',
+      'name',
+      'surname_p',
+      'surname_m',
+      'avatar',
+      'email',
+      'role_id',
+    ]);
+    $item->full_name = trim($item->name . ' ' . $item->surname_p . ' ' . $item->surname_m);
+    $item->avatar_b64 = DocMgrController::getB64($item->avatar, "User");
     $item->role = Role::find($item->role_id, ['name']);
 
     return $item;

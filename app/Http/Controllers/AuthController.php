@@ -20,22 +20,14 @@ class AuthController extends Controller {
         return $this->apiRsp(422, 'Datos de acceso inválidos', null);
       }
 
-      $token = Auth::user()->createToken('authToken')->accessToken;
-      $user = User::find(Auth::id(), [
-        'id',
-        'name',
-        'email',
-        'role_id',
-      ]);
-
-      $user->role = Role::find($user->role_id, ['name']);
-
       return $this->apiRsp(
         200,
         'Datos de acceso validos',
         [
-          'token' => $token,
-          'user' => $user
+          'auth' => [
+            'token' => Auth::user()->createToken('authToken')->accessToken,
+            'user' => User::getItemAuth(Auth::id())
+          ]
         ]
       );
     } catch (Throwable $err) {

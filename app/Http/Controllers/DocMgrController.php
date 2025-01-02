@@ -30,7 +30,7 @@ class DocMgrController extends Controller {
 
   public static function getB64($val, $fld) {
     if (!empty($val)) {
-      $path = storage_path('/app/private/' . $fld . '/' . $val);
+      $path = Storage::disk($fld)->path($val);
 
       if (file_exists($path)) {
         $b64 = new stdClass;

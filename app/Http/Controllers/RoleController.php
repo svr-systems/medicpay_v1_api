@@ -11,7 +11,9 @@ class RoleController extends Controller {
       return $this->apiRsp(
         200,
         'Registros retornados correctamente',
-        Role::getItems()
+        [
+          'items' => Role::getItems()
+        ]
       );
     } catch (Throwable $err) {
       return $this->apiRsp(500, null, $err);

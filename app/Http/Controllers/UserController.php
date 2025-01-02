@@ -14,7 +14,7 @@ class UserController extends Controller {
       return $this->apiRsp(
         200,
         'Registros retornados correctamente',
-        User::getItems($req)
+        ['items' => User::getItems($req)]
       );
     } catch (Throwable $err) {
       return $this->apiRsp(500, null, $err);
@@ -30,7 +30,7 @@ class UserController extends Controller {
       return $this->apiRsp(
         200,
         'Registro retornado correctamente',
-        User::getItem($id)
+        ['item' => User::getItem($id)]
       );
     } catch (Throwable $err) {
       return $this->apiRsp(500, null, $err);
@@ -52,8 +52,7 @@ class UserController extends Controller {
       DB::commit();
       return $this->apiRsp(
         200,
-        'Registro eliminado correctamente',
-        null
+        'Registro eliminado correctamente'
       );
     } catch (Throwable $err) {
       DB::rollback();
@@ -73,10 +72,12 @@ class UserController extends Controller {
       $is_valid = $this->isValid($req, $id);
 
       if ($is_valid->fails()) {
-        return $this->apiRsp(500, $is_valid->errors()->first(), null);
+        return $this->apiRsp(422, $is_valid->errors()->first());
       }
 
-      if (is_null($id)) {
+      $store_mode = is_null($id);
+
+      if ($store_mode) {
         $item = new User;
         $item->password = bcrypt(trim($req->password));
         $item->created_by_id = $req->user()->id;
@@ -88,9 +89,9 @@ class UserController extends Controller {
 
       DB::commit();
       return $this->apiRsp(
-        200,
-        'Registro ' . (is_null($id) ? 'agregado' : 'editado') . ' correctamente',
-        null
+        $store_mode ? 201 : 200,
+        'Registro ' . ($store_mode ? 'agregado' : 'editado') . ' correctamente',
+        ['item' => User::getItemAuth($item->id)]
       );
     } catch (Throwable $err) {
       DB::rollback();
@@ -100,9 +101,12 @@ class UserController extends Controller {
 
   public function isValid($req, $id) {
     $rules = [
-      'name' => 'string|required|min:2|max:95',
+      'name' => 'string|required|min:2|max:50',
+      'surname_p' => 'string|required|min:2|max:25',
+      'surname_m' => 'nullable|string|min:2|max:25',
       'email' => 'string|required|min:2|max:65|unique:users' . ($id ? ',email,' . $id : ''),
       'role_id' => 'numeric|required',
+      'avatar_doc' => 'exclude_if:avatar_doc,null|image|mimes:jpg,jpeg,png|max:3072',
       'password' => 'string' . ($id ? '' : '|required')
     ];
 
@@ -118,6 +122,9 @@ class UserController extends Controller {
   public function saveItem($item, $req) {
     $item->updated_by_id = $req->user()->id;
     $item->name = GenController::filter($req->name, 'U');
+    $item->surname_p = GenController::filter($req->surname_p, 'U');
+    $item->surname_m = GenController::filter($req->surname_m, 'U');
+    $item->avatar = DocMgrController::save($req->avatar, $req->file('avatar_doc'), $req->avatar_dlt, 'User');
     $item->email = $req->email;
     $item->role_id = GenController::filter($req->role_id, 'id');
     $item->save();
@@ -136,8 +143,7 @@ class UserController extends Controller {
       DB::commit();
       return $this->apiRsp(
         200,
-        'Contraseña actualizada correctamente',
-        null
+        'Contraseña actualizada correctamente'
       );
     } catch (Throwable $err) {
       return $this->apiRsp(500, null, $err);
