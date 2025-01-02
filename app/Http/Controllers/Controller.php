@@ -11,7 +11,7 @@ class Controller extends BaseController {
   use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
   public function apiRsp($code, $msg, $data = null) {
-    $ok = $code == 200 || $code == 201 || $code == 204;
+    $ok = $code == 200 || $code == 201;
     $msg_err_def = 'Error. Contacte al equipo de desarrollo';
 
     return response()->json([
