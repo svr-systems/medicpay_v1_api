@@ -63,6 +63,8 @@ class UserController extends Controller {
   public function storeUpdate($req, $id) {
     DB::beginTransaction();
     try {
+      $profile_mode = GenController::filter($req->profile_mode, 'b');
+
       $req->merge(
         [
           'email' => GenController::filter($req->email, 'l'),
@@ -90,8 +92,12 @@ class UserController extends Controller {
       DB::commit();
       return $this->apiRsp(
         $store_mode ? 201 : 200,
-        'Registro ' . ($store_mode ? 'agregado' : 'editado') . ' correctamente',
-        ['item' => User::getItemAuth($item->id)]
+        ($profile_mode ? 'Perfil' : 'Registro') . ' ' . ($store_mode ? 'agregado' : 'editado') . ' correctamente',
+        $store_mode
+        ? ['item' => ['id' => $item->id]]
+        : ($profile_mode
+          ? ['item' => User::getItemAuth($item->id)]
+          : null)
       );
     } catch (Throwable $err) {
       DB::rollback();

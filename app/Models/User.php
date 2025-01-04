@@ -43,9 +43,10 @@ class User extends Authenticatable {
         'role_id'
       ]);
 
-    foreach ($items as $item) {
+    foreach ($items as $key => $item) {
+      $item->key = $key;
       $item->full_name = trim($item->name . ' ' . $item->surname_p . ' ' . $item->surname_m);
-      $item->avatar_b64 = DocMgrController::getB64($item->avatar, "User");
+      $item->avatar_b64 = DocMgrController::getB64($item->avatar, 'User');
       $item->role = Role::find($item->role_id, ['name']);
     }
 
@@ -71,7 +72,7 @@ class User extends Authenticatable {
     $item->created_by = User::find($item->created_by_id, ['email']);
     $item->updated_by = User::find($item->updated_by_id, ['email']);
     $item->full_name = trim($item->name . ' ' . $item->surname_p . ' ' . $item->surname_m);
-    $item->avatar_b64 = DocMgrController::getB64($item->avatar, "User");
+    $item->avatar_b64 = DocMgrController::getB64($item->avatar, 'User');
     $item->avatar_doc = null;
     $item->avatar_dlt = false;
     $item->role = Role::find($item->role_id, ['name']);
@@ -91,7 +92,7 @@ class User extends Authenticatable {
     ]);
 
     $item->full_name = trim($item->name . ' ' . $item->surname_p . ' ' . $item->surname_m);
-    $item->avatar_b64 = DocMgrController::getB64($item->avatar, "User");
+    $item->avatar_b64 = DocMgrController::getB64($item->avatar, 'User');
     $item->role = Role::find($item->role_id, ['name']);
 
     return $item;

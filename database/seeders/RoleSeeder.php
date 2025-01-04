@@ -9,10 +9,10 @@ class RoleSeeder extends Seeder {
   public function run() {
     $items = [
       [
-        "name" => "ADMINISTRADOR",
+        'name' => 'ADMINISTRADOR',
       ],
       [
-        "name" => "USUARIO",
+        'name' => 'USUARIO',
       ],
     ];
 
