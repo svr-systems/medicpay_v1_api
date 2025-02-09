@@ -35,7 +35,7 @@ class Example extends Model {
     return $items;
   }
 
-  static public function getItem($id) {
+  static public function getItem($req, $id) {
     $item = Example::
       find($id, [
         'id',
@@ -54,4 +54,3 @@ class Example extends Model {
     return $item;
   }
 }
-

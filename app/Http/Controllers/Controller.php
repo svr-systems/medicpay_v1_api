@@ -16,7 +16,12 @@ class Controller extends BaseController {
 
     return response()->json([
       'msg' => is_null($msg) && !$ok ? $msg_err_def : $msg,
-      'data' => !$ok && !is_null($data) ? $data->getTraceAsString() : $data,
+      'data' => !$ok && !is_null($data)
+        ? [
+          'err' => $data,
+          'trace' => $data->getTraceAsString()
+        ]
+        : $data,
     ], $code);
   }
 }

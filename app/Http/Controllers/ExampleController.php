@@ -25,12 +25,12 @@ class ExampleController extends Controller {
     return $this->storeUpdate($req, null);
   }
 
-  public function show($id) {
+  public function show(Request $req, $id) {
     try {
       return $this->apiRsp(
         200,
         'Registro retornado correctamente',
-        ['item' => Example::getItem($id)]
+        ['item' => Example::getItem($req, $id)]
       );
     } catch (Throwable $err) {
       return $this->apiRsp(500, null, $err);
@@ -45,6 +45,11 @@ class ExampleController extends Controller {
     DB::beginTransaction();
     try {
       $item = Example::find($id);
+
+      if (!$item) {
+        return $this->apiRsp(422, 'ID no existente');
+      }
+
       $item->active = false;
       $item->updated_by_id = $req->user()->id;
       $item->save();
@@ -94,8 +99,8 @@ class ExampleController extends Controller {
 
   public function isValid($req, $id) {
     $rules = [
-      'name' => 'string|required|min:2|max:20',
-      'example_type_id' => 'numeric|required',
+      'name' => 'required|string|min:2|max:20',
+      'example_type_id' => 'required|numeric',
     ];
 
     return Validator::make(
