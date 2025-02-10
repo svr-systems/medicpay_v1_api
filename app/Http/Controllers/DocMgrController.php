@@ -9,7 +9,7 @@ use stdClass;
 class DocMgrController extends Controller {
   public static function save($val, $doc, $dlt, $fld) {
     if (!GenController::empty($doc)) {
-      $name = Str::random(40) . '.' . $doc->getClientOriginalExtension();
+      $name = Str::random(43) . '.' . $doc->getClientOriginalExtension();
       Storage::disk($fld)->put($name, file_get_contents($doc));
 
       if (!GenController::empty($val)) {
@@ -42,5 +42,9 @@ class DocMgrController extends Controller {
     }
 
     return null;
+  }
+
+  public static function exist($path) {
+    return is_file($path) ? $path : null;
   }
 }

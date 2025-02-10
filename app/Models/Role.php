@@ -9,13 +9,19 @@ class Role extends Model {
   use HasFactory;
   public $timestamps = false;
 
-  static public function getItems() {
+  static public function getItems($req) {
     $items = Role::
-      where('active', true)->
-      get([
-        'id',
-        'name',
-      ]);
+      // where('id', '!=', 4)->
+      where('active', true);
+
+    if ($req->user()->role_id != 1) {
+      $items->where('id', '!=', 1);
+    }
+
+    $items = $items->get([
+      'id',
+      'name',
+    ]);
 
     return $items;
   }

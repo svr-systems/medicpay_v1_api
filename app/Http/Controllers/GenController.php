@@ -53,4 +53,25 @@ class GenController extends Controller {
 
     return false;
   }
+
+  public static function trim($v) {
+    $v = trim($v);
+    return empty($v) ? null : $v;
+  }
+
+  public static function valInInterval($val_1, $val_2, $interval) {
+    $val_1 = (float) $val_1;
+    $val_2 = (float) $val_2;
+    $interval = (float) $interval;
+
+    return $val_1 >= ($val_2 - $interval) && $val_1 <= ($val_2 + $interval);
+  }
+
+  public static function getFullName($val_1, $val_2, $val_3 = null) {
+    return trim(
+      $val_1 . ' ' .
+      $val_2 . ' ' .
+      trim($val_3) . ' '
+    );
+  }
 }

@@ -9,6 +9,9 @@ class RoleSeeder extends Seeder {
   public function run() {
     $items = [
       [
+        'name' => 'SUPER ADMIN.',
+      ],
+      [
         'name' => 'ADMINISTRADOR',
       ],
       [

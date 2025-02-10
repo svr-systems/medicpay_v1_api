@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +12,8 @@ class AuthController extends Controller {
     try {
       if (
         !Auth::attempt([
-          'email' => $req->email,
-          'password' => $req->password
+          'email' => GenController::filter($req->email, 'l'),
+          'password' => trim($req->password)
         ])
       ) {
         return $this->apiRsp(422, 'Datos de acceso inválidos', null);

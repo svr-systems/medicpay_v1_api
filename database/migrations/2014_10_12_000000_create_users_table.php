@@ -12,14 +12,13 @@ class CreateUsersTable extends Migration {
       $table->timestamps();
       $table->foreignId('created_by_id')->constrained('users');
       $table->foreignId('updated_by_id')->constrained('users');
+      $table->timestamp('email_verified_at')->nullable()->default(null);
       $table->string('name', 50);
       $table->string('surname_p', 25);
       $table->string('surname_m', 25)->nullable();
-      $table->string('avatar', 50)->nullable();
-      $table->string('email', 65)->unique();
-      $table->string('password');
-      $table->timestamp('email_verified_at')->nullable();
-      $table->rememberToken();
+      $table->string('avatar', 50)->nullable()->default(null);
+      $table->string('email', 65)->unique()->nullable()->default(null);
+      $table->string('password', 72)->nullable()->default(null);
     });
   }
 
