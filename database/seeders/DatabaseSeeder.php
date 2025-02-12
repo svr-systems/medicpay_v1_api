@@ -10,5 +10,9 @@ class DatabaseSeeder extends Seeder {
     $this->call(UserSeeder::class);
     $this->call(StateSeeder::class);
     $this->call(TownSeeder::class);
+    $this->call(FiscalTypeSeeder::class);
+    $this->call(FiscalRegimeSeeder::class);
+    $this->call(FiscalUseSeeder::class);
+    $this->call(FiscalUseRegimeSeeder::class);
   }
 }

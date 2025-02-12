@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FiscalRegimeController;
+use App\Http\Controllers\FiscalTypeController;
+use App\Http\Controllers\FiscalUseController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\TownController;
@@ -26,6 +29,9 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('password', [UserController::class, 'setPassword']);
       });
       //CATALOGS
+      Route::get('fiscal_uses', [FiscalUseController::class, 'index']);
+      Route::get('fiscal_regimes', [FiscalRegimeController::class, 'index']);
+      Route::get('fiscal_types', [FiscalTypeController::class, 'index']);
       Route::get('towns', [TownController::class, 'index']);
       Route::get('states', [StateController::class, 'index']);
       Route::get('roles', [RoleController::class, 'index']);
