@@ -60,6 +60,13 @@ return [
       'visibility' => 'public',
     ],
 
+    'Hospital' => [
+      'driver' => 'local',
+      'root' => storage_path('app/private/Hospital'),
+      'url' => env('APP_URL') . '/storage',
+      'visibility' => 'public',
+    ],
+
   ],
 
   /*

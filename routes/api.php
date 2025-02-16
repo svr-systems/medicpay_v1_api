@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FiscalRegimeController;
 use App\Http\Controllers\FiscalTypeController;
+use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\TownController;
@@ -22,6 +23,10 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::group(["middleware" => "UsrSystem"], function () {
     Route::group(['prefix' => 'system'], function () {
       //ROUTES
+      Route::apiResource('hospitals', HospitalController::class);
+      Route::group(['prefix' => 'hospitals'], function () {
+        Route::post('restore', [HospitalController::class, 'restore']);
+      });
       Route::apiResource('users', UserController::class);
       Route::group(['prefix' => 'users'], function () {
         Route::post('restore', [UserController::class, 'restore']);
