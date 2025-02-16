@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Hospital;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 use Throwable;
 
 class HospitalController extends Controller {
@@ -102,6 +103,17 @@ class HospitalController extends Controller {
         $valid = Hospital::validFiscal($req);
         if ($valid->fails()) {
           return $this->apiRsp(422, $valid->errors()->first());
+        } else {
+          $valid = new stdClass;
+          $valid->fiscal_code = $req->fiscal_code;
+          $valid->fiscal_name = $req->fiscal_name;
+          $valid->fiscal_zip = $req->fiscal_zip;
+          $valid->fiscal_regime_id = $req->fiscal_regime_id;
+
+          $rsp = FiscalController::customerValid($valid);
+          if (!is_null($rsp->err)) {
+            return $this->apiRsp(422, $rsp->msg, $rsp->err);
+          }
         }
       }
 
