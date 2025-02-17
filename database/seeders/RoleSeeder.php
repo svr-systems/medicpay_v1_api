@@ -14,6 +14,12 @@ class RoleSeeder extends Seeder {
       [
         'name' => 'USR-SIS',
       ],
+      [
+        'name' => 'MÉDICO',
+      ],
+      [
+        'name' => 'MÓDULO',
+      ],
     ];
 
     Role::insert($items);

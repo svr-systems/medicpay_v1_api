@@ -11,7 +11,7 @@ class Role extends Model {
 
   static public function getItems($req) {
     $items = Role::
-      // where('id', '!=', 4)->
+      where('id', '!=', 3)->
       where('active', true);
 
     if ($req->user()->role_id != 1) {

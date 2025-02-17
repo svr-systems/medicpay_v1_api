@@ -63,7 +63,7 @@ class Hospital extends Model {
   }
 
   static public function getUiid($id) {
-    return 'H' . str_pad($id, 4, '0', STR_PAD_LEFT);
+    return 'H' . str_pad($id, 3, '0', STR_PAD_LEFT);
   }
 
   static public function getItems($req) {

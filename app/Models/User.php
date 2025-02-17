@@ -59,7 +59,7 @@ class User extends Authenticatable {
   }
 
   static public function getUiid($id) {
-    return 'U' . str_pad($id, 5, '0', STR_PAD_LEFT);
+    return 'U' . str_pad($id, 4, '0', STR_PAD_LEFT);
   }
 
   static public function getItems($req) {

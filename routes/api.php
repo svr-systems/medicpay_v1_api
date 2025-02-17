@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\FiscalRegimeController;
 use App\Http\Controllers\FiscalTypeController;
 use App\Http\Controllers\HospitalController;
@@ -24,6 +25,11 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::group(["middleware" => "UsrSystem"], function () {
     Route::group(['prefix' => 'system'], function () {
       //ROUTES
+      Route::apiResource('doctors', DoctorController::class);
+      Route::group(['prefix' => 'doctors'], function () {
+        Route::post('restore', [DoctorController::class, 'restore']);
+        Route::post('password', [UserController::class, 'setPassword']);
+      });
       Route::apiResource('specialties', SpecialtyController::class);
       Route::group(['prefix' => 'specialties'], function () {
         Route::post('restore', [SpecialtyController::class, 'restore']);
