@@ -40,7 +40,9 @@ class User extends Authenticatable {
       'surname_p' => 'required|min:2|max:25',
       'surname_m' => 'nullable|min:2|max:25',
       'avatar_doc' => 'exclude_if:avatar_doc,null|image|mimes:jpg,jpeg,png|max:2048',
-      'role_id' => 'required|numeric'
+      'role_id' => 'required|numeric',
+      'phone' => 'nullable|string|digits:10',
+      'movil_phone' => 'nullable|string|digits:10',
     ];
 
     if (!$is_req) {
@@ -118,6 +120,8 @@ class User extends Authenticatable {
         'avatar',
         'email',
         'role_id',
+        'phone',
+        'movil_phone',
       ]);
 
     $item->uiid = User::getUiid($item->id);

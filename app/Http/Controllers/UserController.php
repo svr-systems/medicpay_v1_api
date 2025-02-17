@@ -144,6 +144,8 @@ class UserController extends Controller {
     );
     $item->email = GenController::filter($data->email, 'l');
     $item->role_id = GenController::filter($data->role_id, 'id');
+    $item->phone = GenController::filter($data->phone, 'U');
+    $item->movil_phone = GenController::filter($data->movil_phone, 'U');
     $item->save();
 
     return $item;

@@ -19,6 +19,8 @@ class CreateUsersTable extends Migration {
       $table->string('avatar', 50)->nullable()->default(null);
       $table->string('email', 65)->unique()->nullable()->default(null);
       $table->string('password', 72)->nullable()->default(null);
+      $table->string('phone', 10)->nullable()->default(null);
+      $table->string('movil_phone', 10)->nullable()->default(null);
     });
   }
 
