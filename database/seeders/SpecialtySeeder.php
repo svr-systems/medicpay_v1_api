@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\SpecialtyType;
+use App\Models\Specialty;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
-class SpecialtyTypeSeeder extends Seeder {
+class SpecialtySeeder extends Seeder {
   public function run() {
     $now = Carbon::now()->format('Y-m-d H:i:s');
 
@@ -657,6 +657,6 @@ class SpecialtyTypeSeeder extends Seeder {
       ]
     ];
 
-    SpecialtyType::insert($items);
+    Specialty::insert($items);
   }
 }

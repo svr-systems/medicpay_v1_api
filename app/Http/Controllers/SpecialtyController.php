@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SpecialtyType;
+use App\Models\Specialty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use stdClass;
 use Throwable;
 
-class SpecialtyTypeController extends Controller {
+class SpecialtyController extends Controller {
   public function index(Request $req) {
     try {
       return $this->apiRsp(
         200,
         'Registros retornados correctamente',
-        ['items' => SpecialtyType::getItems($req)]
+        ['items' => Specialty::getItems($req)]
       );
     } catch (Throwable $err) {
       return $this->apiRsp(500, null, $err);
@@ -26,7 +25,7 @@ class SpecialtyTypeController extends Controller {
       return $this->apiRsp(
         200,
         'Registro retornado correctamente',
-        ['item' => SpecialtyType::getItem($req, $id)]
+        ['item' => Specialty::getItem($req, $id)]
       );
     } catch (Throwable $err) {
       return $this->apiRsp(500, null, $err);
@@ -36,7 +35,7 @@ class SpecialtyTypeController extends Controller {
   public function destroy(Request $req, $id) {
     DB::beginTransaction();
     try {
-      $item = SpecialtyType::find($id);
+      $item = Specialty::find($id);
 
       if (!$item) {
         return $this->apiRsp(422, 'ID no existente');
@@ -61,7 +60,7 @@ class SpecialtyTypeController extends Controller {
   public function restore(Request $req) {
     DB::beginTransaction();
     try {
-      $item = SpecialtyType::find($req->id);
+      $item = Specialty::find($req->id);
 
       if (!$item) {
         return $this->apiRsp(422, 'ID no existente');
@@ -75,7 +74,7 @@ class SpecialtyTypeController extends Controller {
       return $this->apiRsp(
         200,
         'Registro activado correctamente',
-        ['item' => SpecialtyType::getItem(null, $item->id)]
+        ['item' => Specialty::getItem(null, $item->id)]
       );
     } catch (Throwable $err) {
       DB::rollback();
@@ -94,7 +93,7 @@ class SpecialtyTypeController extends Controller {
   public function storeUpdate($req, $id) {
     DB::beginTransaction();
     try {
-      $valid = SpecialtyType::valid($req);
+      $valid = Specialty::valid($req);
       if ($valid->fails()) {
         return $this->apiRsp(422, $valid->errors()->first());
       }
@@ -102,11 +101,11 @@ class SpecialtyTypeController extends Controller {
       $store_mode = GenController::empty($id);
 
       if ($store_mode) {
-        $item = new SpecialtyType;
+        $item = new Specialty;
         $item->created_by_id = $req->user()->id;
         $item->updated_by_id = $req->user()->id;
       } else {
-        $item = SpecialtyType::find($id);
+        $item = Specialty::find($id);
         $item->updated_by_id = $req->user()->id;
       }
 

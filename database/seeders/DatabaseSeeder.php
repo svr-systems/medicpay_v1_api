@@ -13,6 +13,6 @@ class DatabaseSeeder extends Seeder {
     $this->call(FiscalTypeSeeder::class);
     $this->call(FiscalRegimeSeeder::class);
     $this->call(HospitalSeeder::class);
-    $this->call(SpecialtyTypeSeeder::class);
+    $this->call(SpecialtySeeder::class);
   }
 }

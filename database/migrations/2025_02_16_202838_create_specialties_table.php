@@ -4,9 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSpecialtyTypesTable extends Migration {
+class CreateSpecialtiesTable extends Migration {
   public function up() {
-    Schema::create('specialty_types', function (Blueprint $table) {
+    Schema::create('specialties', function (Blueprint $table) {
       $table->id();
       $table->boolean('active')->default(true);
       $table->timestamps();
@@ -17,6 +17,6 @@ class CreateSpecialtyTypesTable extends Migration {
   }
 
   public function down() {
-    Schema::dropIfExists('specialty_types');
+    Schema::dropIfExists('specialties');
   }
 }

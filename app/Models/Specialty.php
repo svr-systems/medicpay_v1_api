@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use DateTimeInterface;
 use Illuminate\Support\Facades\Validator;
 
-class SpecialtyType extends Model {
+class Specialty extends Model {
   use HasFactory;
   protected function serializeDate(DateTimeInterface $date) {
     return Carbon::instance($date)->toISOString(true);
@@ -35,7 +35,7 @@ class SpecialtyType extends Model {
   }
 
   static public function getItems($req) {
-    $items = SpecialtyType::
+    $items = Specialty::
       where('id', '!=', 0);
 
     switch ((int) $req->active) {
@@ -63,16 +63,16 @@ class SpecialtyType extends Model {
 
     foreach ($items as $key => $item) {
       $item->key = $key;
-      $item->uiid = SpecialtyType::getUiid($item->id);
+      $item->uiid = Specialty::getUiid($item->id);
     }
 
     return $items;
   }
 
   static public function getItem($req, $id) {
-    $item = SpecialtyType::find($id);
+    $item = Specialty::find($id);
 
-    $item->uiid = SpecialtyType::getUiid($item->id);
+    $item->uiid = Specialty::getUiid($item->id);
     $item->created_by = User::find($item->created_by_id, ['email']);
     $item->updated_by = User::find($item->updated_by_id, ['email']);
 

@@ -5,7 +5,7 @@ use App\Http\Controllers\FiscalRegimeController;
 use App\Http\Controllers\FiscalTypeController;
 use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\SpecialtyTypeController;
+use App\Http\Controllers\SpecialtyController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\TownController;
 use App\Http\Controllers\UserController;
@@ -24,9 +24,9 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::group(["middleware" => "UsrSystem"], function () {
     Route::group(['prefix' => 'system'], function () {
       //ROUTES
-      Route::apiResource('specialty_types', SpecialtyTypeController::class);
-      Route::group(['prefix' => 'specialty_types'], function () {
-        Route::post('restore', [SpecialtyTypeController::class, 'restore']);
+      Route::apiResource('specialties', SpecialtyController::class);
+      Route::group(['prefix' => 'specialties'], function () {
+        Route::post('restore', [SpecialtyController::class, 'restore']);
       });
       Route::apiResource('hospitals', HospitalController::class);
       Route::group(['prefix' => 'hospitals'], function () {
