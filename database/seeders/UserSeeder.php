@@ -16,6 +16,7 @@ class UserSeeder extends Seeder {
         'updated_at' => $now,
         'created_by_id' => 1,
         'updated_by_id' => 1,
+        'email_verified_at' => $now,
         'name' => 'ADMINISTRADOR',
         'surname_p' => 'SISTEMA',
         'email' => 'admin@medicpay.com',

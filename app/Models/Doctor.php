@@ -14,7 +14,6 @@ class Doctor extends Model {
   public static function valid($data) {
     $rules = [
       'hospital_id' => 'required|numeric',
-      'consultation_amount' => 'required|numeric',
     ];
 
     return Validator::make(
@@ -64,12 +63,14 @@ class Doctor extends Model {
 
       $item->user = User::find($item->user_id, [
         'active',
+        'email_verified_at',
         'name',
         'surname_p',
         'surname_m',
         'email',
       ]);
       $item->user->full_name = GenController::getFullName($item->user->name, $item->user->surname_p, $item->user->surname_m);
+      $item->email_verified_at = $item->user->email_verified_at;
 
       $item->hospital = Hospital::find($item->hospital_id, [
         'name',
@@ -98,8 +99,7 @@ class Doctor extends Model {
       'id',
       'active',
       'user_id',
-      'hospital_id',
-      'consultation_amount',
+      'hospital_id'
     ]);
 
     $item->uiid = Doctor::getUiid($item->id);
@@ -108,6 +108,7 @@ class Doctor extends Model {
     $item->updated_at = $item->user->updated_at;
     $item->created_by = $item->user->created_by;
     $item->updated_by = $item->user->updated_by;
+    $item->email_verified_at = $item->user->email_verified_at;
     $item->hospital = Hospital::getItem(null, $item->hospital_id);
     $item->doctor_specialties = DoctorSpecialty::getItems($item->id);
 

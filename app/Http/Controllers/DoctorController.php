@@ -179,9 +179,64 @@ class DoctorController extends Controller {
 
   public static function saveItem($item, $data) {
     $item->hospital_id = GenController::filter($data->hospital_id, 'id');
-    $item->consultation_amount = GenController::filter($data->consultation_amount, 'f');
     $item->save();
 
     return $item;
+  }
+
+  public function storeByDoctor(Request $req) {
+    DB::beginTransaction();
+    try {
+      //User
+      $user_data = json_decode(json_encode($req->user));
+      $user_data->active = true;
+      $user_data->role_id = 3;
+
+      $valid = User::validEmail(['email' => GenController::filter($user_data->email, 'l')], null);
+      if ($valid->fails()) {
+        return $this->apiRsp(422, $valid->errors()->first());
+      }
+
+      $valid = User::valid($user_data, false);
+      if ($valid->fails()) {
+        return $this->apiRsp(422, $valid->errors()->first());
+      }
+
+      $user = new User;
+      $user->created_by_id = 1;
+      $user->updated_by_id = 1;
+      $user->password = bcrypt(GenController::trim($user_data->password));
+      $user = UserController::saveItem($user, $user_data, false);
+
+      //Item
+      $valid = Doctor::valid($req);
+      if ($valid->fails()) {
+        return $this->apiRsp(422, $valid->errors()->first());
+      }
+
+      $item = new Doctor;
+      $item->user_id = $user->id;
+      $item = $this->saveItem($item, $req);
+
+      //specialties
+      $doctor_specialties = json_decode(json_encode($req->doctor_specialties));
+      foreach ($doctor_specialties as $data) {
+        $data->doctor_id = $item->id;
+
+        $valid = DoctorSpecialty::valid($data);
+        if ($valid->fails()) {
+          return $this->apiRsp(422, $valid->errors()->first());
+        }
+
+        $doctor_specialty = new DoctorSpecialty;
+        $doctor_specialty = DoctorSpecialtyController::saveItem($doctor_specialty, $data);
+      }
+
+      DB::commit();
+      return $this->apiRsp(200, 'Registro realizado correctamente');
+    } catch (Throwable $err) {
+      DB::rollback();
+      return $this->apiRsp(500, null, $err);
+    }
   }
 }

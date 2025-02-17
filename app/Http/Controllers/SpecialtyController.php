@@ -129,4 +129,16 @@ class SpecialtyController extends Controller {
 
     return $item;
   }
+
+  public function getItemsPublic() {
+    try {
+      return $this->apiRsp(
+        200,
+        'Registros retornados correctamente',
+        ['items' => Specialty::getItemsPublic()]
+      );
+    } catch (Throwable $err) {
+      return $this->apiRsp(500, null, $err);
+    }
+  }
 }

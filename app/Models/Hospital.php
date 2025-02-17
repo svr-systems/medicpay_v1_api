@@ -128,4 +128,16 @@ class Hospital extends Model {
 
     return $item;
   }
+
+  static public function getItemsPublic() {
+    $items = Hospital::
+      where('active', true)->
+      orderBy('name')->
+      get([
+        'id',
+        'name',
+      ]);
+
+    return $items;
+  }
 }

@@ -180,4 +180,16 @@ class HospitalController extends Controller {
 
     return $item;
   }
+
+  public function getItemsPublic() {
+    try {
+      return $this->apiRsp(
+        200,
+        'Registros retornados correctamente',
+        ['items' => Hospital::getItemsPublic()]
+      );
+    } catch (Throwable $err) {
+      return $this->apiRsp(500, null, $err);
+    }
+  }
 }

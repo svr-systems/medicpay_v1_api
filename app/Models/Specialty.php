@@ -78,4 +78,16 @@ class Specialty extends Model {
 
     return $item;
   }
+
+  static public function getItemsPublic() {
+    $items = Specialty::
+      where('active', true)->
+      orderBy('name')->
+      get([
+        'id',
+        'name',
+      ]);
+
+    return $items;
+  }
 }

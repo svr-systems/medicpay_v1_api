@@ -11,7 +11,6 @@ class CreateDoctorsTable extends Migration {
       $table->boolean('active')->default(true);
       $table->foreignId('user_id')->constrained('users');
       $table->foreignId('hospital_id')->constrained('hospitals');
-      $table->decimal('consultation_amount', 11, 2)->default(0);
     });
   }
 

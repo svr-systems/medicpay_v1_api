@@ -20,7 +20,7 @@ class User extends Authenticatable {
   protected $casts = [
     'created_at' => 'datetime:Y-m-d H:i:s',
     'updated_at' => 'datetime:Y-m-d H:i:s',
-    'email_verified_at' => 'datetime',
+    'email_verified_at' => 'datetime:Y-m-d H:i:s',
   ];
   protected $hidden = ['password'];
 
@@ -64,7 +64,8 @@ class User extends Authenticatable {
 
   static public function getItems($req) {
     $items = User::
-      where('id', '!=', $req->user()->id);
+      where('id', '!=', $req->user()->id)->
+      where('role_id', '!=', 3);
 
     switch ((int) $req->active) {
       case 0:
@@ -114,6 +115,7 @@ class User extends Authenticatable {
         'updated_at',
         'created_by_id',
         'updated_by_id',
+        'email_verified_at',
         'name',
         'surname_p',
         'surname_m',

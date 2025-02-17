@@ -53,6 +53,14 @@ Route::group(['middleware' => 'auth:api'], function () {
   });
 });
 
-// Route::group(['prefix' => 'public'], function () {
-//   //
-// });
+Route::group(['prefix' => 'public'], function () {
+  Route::group(['prefix' => 'doctor'], function () {
+    Route::post('', [DoctorController::class, 'storeByDoctor']);
+  });
+  Route::group(['prefix' => 'hospitals'], function () {
+    Route::get('', [HospitalController::class, 'getItemsPublic']);
+  });
+  Route::group(['prefix' => 'specialties'], function () {
+    Route::get('', [SpecialtyController::class, 'getItemsPublic']);
+  });
+});
